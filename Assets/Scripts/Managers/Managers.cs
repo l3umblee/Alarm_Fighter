@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
+    //คว
     static Managers _instance;
     public static Managers Instance {  get { Init();  return _instance; } }
 
