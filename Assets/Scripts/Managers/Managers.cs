@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
+    //this is Managers_signleton pattern
+
     static Managers _instance;
     public static Managers Instance {  get { Init();  return _instance; } }
 
