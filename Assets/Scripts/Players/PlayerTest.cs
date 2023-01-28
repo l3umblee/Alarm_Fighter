@@ -7,7 +7,7 @@ public class PlayerTest : FieldObject
 {
 
     TimingManager timingManager;
-
+    MonsterPattern attackPattern = new LinePattern();
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +17,12 @@ public class PlayerTest : FieldObject
         type = 1;
         objectField = Managers.Field.getField();
         objectList = objectField.getGridArray(type);
-        
+
+        // maxHP와 currentHP 초기화 (1.25 재윤 추가)
+        maxHP = 3;
+
+        currentHP = maxHP;
+
         currentInd = objectList.Count / 2; // 이 초기화의 위치는 Field의 Width가 어떻든, 가운데에 오게할 수 있음 (1.18 재윤 추가)
         transform.position = objectList[currentInd].transform.position;
     }
@@ -30,12 +35,8 @@ public class PlayerTest : FieldObject
 
     protected override void BitBehave()
     {
-       /* if (!Managers.Bpm.Able)
-            return;*/
         if (Input.GetKeyDown(KeyCode.W))
         {
-            //Managers.Timing.CheckTiming();
-            //timingManager.CheckTiming();
             if (timingManager.CheckTiming())
             {
                 mayGo(Define.PlayerMove.Up);
@@ -43,8 +44,6 @@ public class PlayerTest : FieldObject
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            //Managers.Timing.CheckTiming();
-            //timingManager.CheckTiming();
             if (timingManager.CheckTiming())
             {
                 mayGo(Define.PlayerMove.Left);
@@ -52,8 +51,6 @@ public class PlayerTest : FieldObject
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            //Managers.Timing.CheckTiming();
-            //timingManager.CheckTiming();
             if (timingManager.CheckTiming())
             {
                 mayGo(Define.PlayerMove.Down);
@@ -62,8 +59,6 @@ public class PlayerTest : FieldObject
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            //Managers.Timing.CheckTiming();
-            //timingManager.CheckTiming();
             if (timingManager.CheckTiming())
             {
                 mayGo(Define.PlayerMove.Right);
@@ -71,8 +66,6 @@ public class PlayerTest : FieldObject
         }
         else if (Input.GetKeyDown(KeyCode.K))
         {
-            //Managers.Timing.CheckTiming();
-            //timingManager.CheckTiming();
             if (timingManager.CheckTiming())
             {
                 Attack();
@@ -88,10 +81,13 @@ public class PlayerTest : FieldObject
         // Hierachy 상에서 Player 안의 애니메이션을 받아오겠다는 이야기
         Transform attack = transform.GetChild(0);
         attack.GetComponent<PlayerAttack>().Attacking();
+        int[] pattern = attackPattern.calculateIndex(currentInd);
+        Managers.Field.Attack(pattern);
     }
 
     protected override void Hit()
     {
         // hit 오버라이딩 하기
+
     }
 }

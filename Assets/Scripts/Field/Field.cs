@@ -119,7 +119,9 @@ public abstract class Field : MonoBehaviour
             GameObject temp = gridArray[indexs[i]];
             SpriteRenderer sr = temp.GetComponent<SpriteRenderer>();
             StartCoroutine("ActiveDamageField", temp);
-            sr.color = new Color(1, 1, 1, 0);
+            // 잠깐 보류 (1.25 재윤 추가) -> 타일이 아예 없어지는 것을 방지
+            //sr.color = new Color(1, 1, 1, 0);
+            sr.color = Color.grey;
         }
     }
     IEnumerator ActiveDamageField(GameObject go)
