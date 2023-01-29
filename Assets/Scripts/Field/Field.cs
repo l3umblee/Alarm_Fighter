@@ -106,7 +106,7 @@ public abstract class Field : MonoBehaviour
 
     public void WarningAttack(int[] indexs)
     {
-        for(int i=0;i<indexs.Length;i++)
+        for(int i=0; i < indexs.Length; i++)
         {
             SpriteRenderer temp = gridArray[indexs[i]].GetComponent<SpriteRenderer>();
             temp.color = Color.red;
@@ -117,6 +117,7 @@ public abstract class Field : MonoBehaviour
         for (int i = 0; i < indexs.Length; i++)
         {
             GameObject temp = gridArray[indexs[i]];
+            Debug.Log(indexs[i]);
             SpriteRenderer sr = temp.GetComponent<SpriteRenderer>();
             StartCoroutine("ActiveDamageField", temp);
             // 잠깐 보류 (1.25 재윤 추가) -> 타일이 아예 없어지는 것을 방지
@@ -128,7 +129,8 @@ public abstract class Field : MonoBehaviour
     {
         PolygonCollider2D poly = go.GetComponent<PolygonCollider2D>();
         poly.enabled = true;
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
+        poly.enabled = false;
     }
     void Awake()
     {

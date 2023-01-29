@@ -9,14 +9,21 @@ public class MonsterVer2 : FieldObject
     //to do : MonsterMove or MoveDirection
     Define.PlayerMove nextDirection = Define.PlayerMove.Right;
     MonsterPattern attackPattern = new LinePattern();
-    int maxHp = 3;
+
+    MonsterHPbar hpBar;
     private void Start()
     {
         type = 2;
         objectField = Managers.Field.getField();
         objectList = objectField.getGridArray(type);
 
-        currentInd = objectList.Count / 2 - 1;
+        hpBar = GameObject.FindObjectOfType<MonsterHPbar>();
+        // maxHP와 currentHP 초기화 (1.25 재윤 추가)
+        maxHP = 3;
+        currentHP = maxHP;
+
+        // 처음에 몬스터 4번 인덱스 배치 (후진 중앙 배치) - (1.29 재윤 추가)
+        currentInd = objectList.Count / 2 + 1;
         transform.position = objectList[currentInd].transform.position;
 
         Managers.Timing.BehaveAction -= BitBehave;
@@ -53,7 +60,8 @@ public class MonsterVer2 : FieldObject
     void ChaseCheck()
     {
         //to do : left or right or Stop Check
-        int rand = Random.Range(0, 2);
+        // 다양한 방향 move (1.29 재윤 추가) -> Random.Ranage(0, 4)를 통해 0, 1, 2, 3 사이의 난수 발생
+        int rand = Random.Range(0, 4);
         switch(rand)
         {
             case 0:
@@ -62,10 +70,17 @@ public class MonsterVer2 : FieldObject
             case 1:
                 nextDirection = Define.PlayerMove.Left;
                 break;
-            case 2:
+            /*case 2:
                 nextDirection = Define.PlayerMove.Stop;
+                break;*/
+            case 2:
+                nextDirection = Define.PlayerMove.Up;
                 break;
-        }    
+            case 3:
+                nextDirection = Define.PlayerMove.Down;
+                break;
+
+        }
     }
 
 
@@ -102,5 +117,16 @@ public class MonsterVer2 : FieldObject
         Managers.Field.WarningAttack(pattern);
 
     }
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("monster hit enter");
+        currentHP -= 1;
+        hpBar.UpdateValue(currentHP, maxHP);
+        if (currentHP <= 0)
+        {
+            Debug.Log("You Win!");
+            Managers.isPlayingGame = false;
+            return;
+        }
+    }
 }

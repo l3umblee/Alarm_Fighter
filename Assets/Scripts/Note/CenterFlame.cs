@@ -22,6 +22,8 @@ public class CenterFlame : MonoBehaviour
             {
                 myAudio.Play();
                 isPlaying = true;
+                //Managers.isPlayingGame¿ª true∑Œ πŸ≤„¡÷±‚ (1.29 ¿Á¿± √ﬂ∞°)
+                Managers.isPlayingGame = true;
             }
 
         }

@@ -12,8 +12,9 @@ public abstract class FieldObject : MonoBehaviour
     protected List<GameObject> objectList; // Field로 부터 받아온 타일의 리스트 -> 이 클래스를 상속 받은 클래스의 Start에서 초기화 해줌.
     
     // FieldObject들을 위한 currentHP와 maxHP 구현 (1.25 재윤 추가)
-    protected int currentHP;
-    protected int maxHP;
+    // protected -> public 변환 (1.29 재윤 추가)
+    public int currentHP;
+    public int maxHP;
 
     // mayGo 함수 -> 플레이어의 위치를 옮겨주며 direction을 매개변수로 받는다. -> Player와 Monster 모두 Direction을 넘겨주면 됨.
     protected void mayGo(Define.PlayerMove direction) 

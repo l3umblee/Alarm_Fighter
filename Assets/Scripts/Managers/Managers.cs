@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
+    // isPlayingGame을 Managers.cs에 추가(1.29 - 몬스터의 행동 초기화 위함 / 재윤 추가)
+    static public bool isPlayingGame = false;
+
     static Managers _instance;
     public static Managers Instance { get { Init(); return _instance; } }
 
@@ -68,5 +71,10 @@ public class Managers : MonoBehaviour
     {
         //Manager Clear
         Pool.Clear();
+    }
+    // GameOver를 위한 함수 구현 (1.29 재윤 추가)
+    private void GameOver()
+    {
+        // GameOver 구현해주기
     }
 }

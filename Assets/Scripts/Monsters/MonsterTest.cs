@@ -20,6 +20,9 @@ public class MonsterTest : FieldObject
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("test");
+        if (!Managers.isPlayingGame)
+            return;
         currentTime += Time.deltaTime;
         if (currentTime >= 60d / Managers.Bpm.BPM)
         {

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4633547856932887700}
   - component: {fileID: 4370365561207273168}
   m_Layer: 0
-  m_Name: Isometric Diamond
+  m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
