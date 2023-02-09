@@ -8,11 +8,13 @@ public class PlayerTest : FieldObject
 {
 
     TimingManager timingManager;
-    int maxHp = 3;
+    int maxHp = 5;
     int currentHp;
 
 
     HpBar hpBar;
+
+    AttackZoneMonster monster;
     public int CurrentHp
     {
         get { return currentHp; }
@@ -38,6 +40,8 @@ public class PlayerTest : FieldObject
 
         currentInd = objectList.Count / 2; // 이 초기화의 위치는 Field의 Width가 어떻든, 가운데에 오게할 수 있음 (1.18 재윤 추가)
         transform.position = objectList[currentInd].transform.position;
+
+        monster = FindObjectOfType<AttackZoneMonster>();
     }
 
     // Update is called once per frame
@@ -57,18 +61,18 @@ public class PlayerTest : FieldObject
 
     protected override void Attack()
     {
+        /*
         int[] pattern = GetComponent<Weapon>().CalculateAttackRange(currentInd);
         Managers.Field.WarningAttack(pattern);
         Managers.Field.Attack(pattern);
-
-
+        */
         Transform attack = transform.GetChild(0);
         attack.GetComponent<PlayerAttack>().Attacking();
+        monster.MonsterHit();
     }
 
     protected override void Hit()
     {
-        Debug.Log("Hit!!!!");
         GetComponent<Animator>().SetTrigger("isHit");
         CurrentHp -= 1;
         Managers.Sound.Play("Hit");
@@ -85,7 +89,27 @@ public class PlayerTest : FieldObject
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Hit();
-    }
+        if (collision.gameObject.name == "AttackZone")
+        {
+            Attack();
+            Managers.Timing.isIn = true;
 
+            collision.gameObject.name = "NormalZone";
+
+            PolygonCollider2D poly = collision.gameObject.GetComponent<PolygonCollider2D>();
+            SpriteRenderer sr = collision.gameObject.GetComponent<SpriteRenderer>();
+
+            sr.color = new Color(87 / 255f, 87 / 255f, 87 / 255f);
+            poly.enabled = false;
+
+            Managers.Field.ActivateAttackZone();
+        }
+        else if (collision.gameObject.name == "HitZone")
+        {
+            collision.gameObject.name = "NormalZone";
+            Debug.Log("hit");
+            Hit();
+        }
+        else return;
+    }
 }

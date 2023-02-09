@@ -18,7 +18,14 @@ public class FieldManager
     {
         field.Damage(indexs);
     }
-
-    
+    // 재윤 추가 (2.5) -> AttackZone 구현을 위한 함수
+    public void ActivateAttackZone()
+    {
+        field.getAttackZone();
+    }
+    public void clearGridColor()
+    {
+        field.clearTileColor();
+    }
 
 }

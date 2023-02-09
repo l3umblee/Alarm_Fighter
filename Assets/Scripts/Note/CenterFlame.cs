@@ -14,6 +14,7 @@ public class CenterFlame : MonoBehaviour
             if (collision.CompareTag("Note2"))
             {
                 isPlaying = true;
+                Managers.isPlayingGame = true;
             }
 
         }

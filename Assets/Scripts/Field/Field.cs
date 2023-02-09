@@ -87,7 +87,9 @@ public abstract class Field : MonoBehaviour
                 GameObject grid = Instantiate(gridPrefab) as GameObject;
                 grid.transform.position = new Vector3((float)(((x_size + gap) * scale_x * x + (x_size + gap) * scale_x * y) + location_x), (float)(((-gap - y_size) * scale_y * x + (gap + y_size) * scale_y * y) + location_y), 0f);
                 grid.transform.SetParent(grid_All.transform);//하나로 뭉치기
-                gridArray.Add(grid);//데이터 정보 저장
+                gridArray.Add(grid);//데이터 정보 저장\
+                // 재윤 추가 (2.5)
+                grid.name = "NormalZone";
                 Debug.Log(grid);
             }
         }
@@ -108,27 +110,68 @@ public abstract class Field : MonoBehaviour
     {
         for(int i=0;i<indexs.Length;i++)
         {
+            //if (currentAttackZone == i) continue;
+            if (gridArray[indexs[i]].name == "AttackZone") continue;
             SpriteRenderer temp = gridArray[indexs[i]].GetComponent<SpriteRenderer>();
-            temp.color = Color.red;
+            temp.color = Color.yellow;
         }
     }
     public void Damage(int[] indexs)
     {
         for (int i = 0; i < indexs.Length; i++)
         {
-            GameObject temp = gridArray[indexs[i]];
-            SpriteRenderer sr = temp.GetComponent<SpriteRenderer>();
-            StartCoroutine("ActiveDamageField", temp);
-            sr.color = new Color(1, 1, 1, 0);
+            //if (i == currentAttackZone) continue;
+            if (gridArray[indexs[i]].name == "AttackZone") continue;
+            else
+            {
+                GameObject temp = gridArray[indexs[i]];
+                SpriteRenderer sr = temp.GetComponent<SpriteRenderer>();
+                sr.color = Color.red;
+                StartCoroutine("ActiveDamageField", temp);
+            }
+            //sr.color = new Color(1, 1, 1, 0);
+            // 공격할 때 빨간색으로 타일이 바뀌고, 몬스터가 공격에 실패했을때 빨간색 타일이 계속 남아 있는 이슈 (1.31 재윤)
+            //sr.color = new Color(87 / 255f, 87 / 255f, 87 / 255f);
         }
     }
+    private int currentAttackZone = 4;
+    public void clearTileColor()
+    {
+        for(int i = 0; i < gridArray.Count; i++)
+        {
+            Debug.Log(gridArray[i].name);
+            if (gridArray[i].name == "AttackZone") continue;
+            //if (i == currentAttackZone) continue;
+            SpriteRenderer sr = gridArray[i].GetComponent<SpriteRenderer>();
+            sr.color = new Color(87 / 255f, 87 / 255f, 87 / 255f);
+
+        }
+    }
+    public void getAttackZone()
+    {
+        int randnum = Random.Range(0, playergridArray.Count);
+        currentAttackZone = randnum;
+
+        GameObject temp = gridArray[randnum];
+        SpriteRenderer sr = temp.GetComponent<SpriteRenderer>();
+        PolygonCollider2D poly = temp.GetComponent<PolygonCollider2D>();
+
+        poly.enabled = true;
+        temp.name = "AttackZone";
+
+        sr.color = Color.green;
+    }
+
     IEnumerator ActiveDamageField(GameObject go)
     {
+        go.name = "HitZone";
         PolygonCollider2D poly = go.GetComponent<PolygonCollider2D>();
         poly.enabled = true;
-        yield return new WaitForFixedUpdate();
-        poly.enabled = false;
 
+        yield return new WaitForFixedUpdate();
+
+        go.name = "NormalZone";
+        poly.enabled = false;
     }
     void Awake()
     {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
+    // ¿Á¿± √ﬂ∞° (2.5)
+    public static bool isPlayingGame = false;
+
     static Managers _instance;
     public static Managers Instance { get { Init(); return _instance; } }
 

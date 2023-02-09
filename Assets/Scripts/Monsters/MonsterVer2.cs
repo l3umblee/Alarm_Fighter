@@ -106,13 +106,11 @@ public class MonsterVer2 : FieldObject
 
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         currentHp -= 1;
         GetComponent<Animator>().Play("Hit");
 
-        Debug.Log("Monster Hit");
         if (currentHp <= 0)
             Die();
     }

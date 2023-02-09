@@ -9,6 +9,9 @@ public class TimingManager :MonoBehaviour
     // 생성되는 흰 note를 넣을 List
     public List<GameObject> noteList = new List<GameObject>();
 
+    // AttackZone에 들어왔을 때 true를 반환 -> 재윤 추가(2.5)
+    public bool isIn = true;
+
     [SerializeField] Transform centerFlame=null;
        /* = GameObject.Find("CenterFlame").transform;*/  //CenterFlame의 위치
 
@@ -35,6 +38,8 @@ public class TimingManager :MonoBehaviour
 
         _root = GameObject.Find("Note2");
     }*/
+
+    public bool isStart = false;
     void Start()
     {
         timingRange = new Vector2[timingRect.Length]; //크기 4
@@ -80,17 +85,30 @@ public class TimingManager :MonoBehaviour
     
     public void UpdatePerBit()
     {
+        if (!Managers.isPlayingGame) return;
         currentTime += Time.deltaTime;
         if(currentTime >= 60d /Managers.Bpm.BPM)
         {
+            Debug.Log(isIn);
+            Managers.Field.clearGridColor();
             if(BehaveAction != null)
                 BehaveAction.Invoke();
-            Debug.Log("work!");
+
+            //Managers.Field.ActivateAttackZone();
+            if(isIn)
+            {
+                Debug.Log("ActivateAttackZone()");
+                Managers.Field.ActivateAttackZone();
+                isIn = false;
+            }
             currentTime -= 60d / Managers.Bpm.BPM;
         }
     }
     public void Clear()
     {
+        // 재윤 추가 (2.5)
+        Managers.isPlayingGame = false;
         noteList = null; timingRange = null; timingRange = null;
+        BehaveAction = null;
     }
 }
