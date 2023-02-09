@@ -35,7 +35,6 @@ public class RoundField : MonoBehaviour
                 index++;
             }
         }
-        
     }
     void Awake()    
     {
