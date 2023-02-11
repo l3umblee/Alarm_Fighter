@@ -4,23 +4,9 @@ using UnityEngine;
 
 public class Sword : Weapon
 {
-
-    protected override void Init()
+    public Sword()
     {
-        weapon = "Player/Weapons/Sword";
-        Damage = 2;
-        base.Init();
+        //weaponObject = Managers.Resource.Load<GameObject>("Prefabs/Items/Weapons/Sword");
+        weaponObject = Managers.Resource.Load<GameObject>("Player/Weapons/Sword");
     }
-    public override int[] CalculateAttackRange(int currentInd)
-    {
-        int[] pattern = new int[2];
-        for (int i = 0; i < pattern.Length; i++)
-        {
-            currentInd += 3;
-            pattern[i] = currentInd;
-
-        }
-        return pattern;
-    }
-
 }

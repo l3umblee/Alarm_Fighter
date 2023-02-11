@@ -140,7 +140,7 @@ public abstract class Field : MonoBehaviour
         Rotation(grid_All);
         prepabMove(grid_All);
         seperatedGridArea();
-        Managers.Field.setField(this);
-        Field temp = Managers.Field.getField();
+        //Managers.Field.setField(this);
+        //Field temp = Managers.Field.getField();
     }
 }

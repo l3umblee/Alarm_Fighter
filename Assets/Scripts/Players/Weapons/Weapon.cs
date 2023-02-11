@@ -2,34 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon 
 {
-    protected string weapon;
-    public int Damage { get; protected set;}
-    //to do : Effect
-
-
-
-    private void Start()
-    {
-        Init();
-    }
-
+    public Define.ItemRank Rank { get; private set; }
+    int attackRange;
+    int numOfAttack;
+    AnimationClip attackAnim;
+    protected GameObject weaponObject;
+    // int Damage -> protected int Damage로 수정 (2.9 재윤 추가)
+    protected int Damage;
+    // virtual이 override 되도록 선언만 해줌 (2.9재윤 추가)
     protected virtual void Init()
     {
-        ArmWeapon();
+
     }
 
-    public virtual int[] CalculateAttackRange(int currentInd)
+    public void Attack()
     {
-        return new int[1] { currentInd };
+        //to do : 이펙트 소환
     }
 
-    public virtual void ArmWeapon()
+    public void WeaponDestroy()
     {
-        if (weapon == null)
-            return;
-        GameObject go = Util.FindChild(gameObject, "Hand");
-        Managers.Resource.Instantiate(weapon, Util.FindChild(gameObject, "Hand").transform);
+
+    }
+    // 2차원 배열로 다뤄주기 때문에 반환형 수정 (2.9 재윤 추가)
+    public virtual int[ , ] CalculateAttackRange(int row, int column)
+    {
+        return new int[1, 1];
+    }
+
+    public void Mount(GameObject parent)
+    {
+        GameObject go = Object.Instantiate(weaponObject);
+        go.transform.SetParent(parent.transform);
+        go.transform.localPosition = Vector3.zero;
     }
 }

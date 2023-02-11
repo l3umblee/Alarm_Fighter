@@ -33,4 +33,10 @@ public class Define
         Effect,
         MaxCount,
     }
+
+    public enum ItemRank
+    {
+
+    }
+
 }
